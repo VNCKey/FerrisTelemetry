@@ -1,0 +1,8 @@
+/target
+benchmarks/python_fastapi/.venv/
+__pycache__/
+*.pyc
+ferris_telemetry.db-shm
+ferris_telemetry.db-wal
+*.db
+benchmarks/go_fiber/fiber_server

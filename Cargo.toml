@@ -1,0 +1,55 @@
+[package]
+name = "ferris_telemetry"
+version = "0.1.0"
+default-run = "ferris_telemetry"
+edition = "2021"
+authors = ["Ferris Telemetry Team <ferris@rust.org>"]
+description = "High-performance TUI APM, observability & real-time Framework Arena benchmark in Rust"
+
+[[bin]]
+name = "ferris_telemetry"
+path = "src/main.rs"
+
+[[bin]]
+name = "axum_server"
+path = "benchmarks/rust_axum/main.rs"
+
+[[bin]]
+name = "actix_server"
+path = "benchmarks/rust_actix/main.rs"
+
+[dependencies]
+# TUI & Terminal
+ratatui = "0.29"
+crossterm = { version = "0.28", features = ["event-stream"] }
+
+# Asynchronous Web Server & Middleware
+axum = "0.8"
+actix-web = "4"
+tokio = { version = "1.43", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "cors"] }
+
+# Database (SQLite app history + PostgreSQL benchmark targets)
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "postgres"] }
+tokio-postgres = "0.7"
+
+# System Metrics & Concurrency
+sysinfo = "0.33"
+parking_lot = "0.12"
+reqwest = { version = "0.12", features = ["json"] }
+
+# Serialization & Utilities
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = true

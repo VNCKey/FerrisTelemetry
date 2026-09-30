@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ferris_bench
+      POSTGRES_USER: ferris
+      POSTGRES_PASSWORD: ferris
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ferris_postgres18_data:/var/lib/postgresql
+      - ./benchmarks/postgres/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+      - ./benchmarks/postgres/seed.sql:/docker-entrypoint-initdb.d/002-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ferris -d ferris_bench"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  ferris_postgres18_data:
